@@ -1,0 +1,108 @@
+\documentclass[10pt,letterpaper,notitlepage,twocolumn]{article}
+
+\usepackage[top=0.75in, bottom=0.75in, left=0.5in, right=0.5in]{geometry}
+\usepackage{times}
+\usepackage{graphicx}
+
+\title{Identification of human control during perturbed walking}
+\author{
+  Jason K. Moore, Sandra K. Hnat, Antonie J. van den Bogert\\
+  Human Motion and Control Laboratory, Cleveland State University, Cleveland, Ohio, USA\\
+  Email: j.k.moore19@csuohio.edu Web: http://hmc.csuohio.edu
+}
+\date{}
+
+\begin{document}
+\pagenumbering{gobble} % removes page numbers
+
+\maketitle
+
+\section*{Introduction}
+%
+Gait related powered prosthetics have begun to emerge in research and more
+recently commercial use. These devices include a variety of sensors and
+actuators than can be coupled by a control system to provide more natural gait
+and eventually balance to people with lower extremity disabilities. In
+particular, there are a few light weight lower extremity exoskeletons on the
+market that assist in walking but lack gait that resembles an able bodied
+human. Our intent is to identify a simple linear controller from a large set of
+data collected from able bodied walkers under prescribed longitudinal and/or
+lateral perturbations with the power prosthetics application in mind.
+%
+\section*{Methods}
+%
+Herein were present results from data collected from a single subject (age: 25,
+mass: 101 kg, height: 187 cm) walking at 1.2 m/s on a treadmill (ForceLink
+R-Mill) while being longitudinally perturbed, i.e. a random white noise with
+5\% std around a nominal belt speed. We collect data for four minutes at 100 Hz
+which includes about ~200 steps. We compute the ankle plantarflexion, knee
+flexion, and hip flexion angles, rates, and moments using basic 2D inverse
+dynamics \cite{Winter}. % TODO : Add references.
+
+We section the inverse dynamics time series into steps based on the right
+foot's heel strike and interpolate 20 evenly spaced data points for each series
+along the gait cycle. We assume a simple proportional derivative controller
+that generates the joint torques given the joint angles and rates that fits
+this form:
+%
+\begin{equation}
+  m_m(\phi) = m_0(\phi) + \mathbf{K}[s_0(\phi) - s_m(\phi)]
+\end{equation}
+%
+where $\phi$ is the time in the right leg gait cycle, $m_m(\phi)$ is a vector
+of measured joint torques, $m_0(\phi)$ are the joint torques needed if the
+feedback error is zero, $\mathbf{K}$ is the gain matrix which multiplies the
+error in the joint angles and rates with respect to the set point, $s_0(\phi)$.
+We then rearrange the equation to make it linear in the measured sensors and a
+reference torques, $m^*(\phi)$.
+%
+\begin{equation}
+  m_m(\phi) = m^*(\phi) - \mathbf{K}s_m(\phi)
+\end{equation}
+%
+Given enough measured data, $m_m(\phi)$ and $s_m(\phi)$, the reference torques
+$m^*(\phi)$ and the gains $\mathbf{K}$ can be solved for using linear least
+squares. The externally applied longitudinal perturbations are important for
+reducing the uncertainty in the identified parameters.
+%
+\section*{Results}
+%
+Here we show an example results from a controller structure which is limited
+such that the joint torques are only generated from the error in the sensors
+from that same joint. Figure \ref{fig:gains} shows the estimates of the
+scheduled gains with respect to the percent gait cycle (right heel strike at
+0\%). Figure \ref{fig:fit} shows an example prediction of the measured ankle
+plantarflexion torque in the right leg by the identified control model with a
+variance accounted for [VAF] of 76.8\%.
+%
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\columnwidth]{fig/gains.pdf}
+    \label{fig:gains}
+    %\caption{Needs one.}
+  \end{center}
+\end{figure}
+%
+\begin{figure}
+  \begin{center}
+    \includegraphics[width=\columnwidth]{fig/fit.pdf}
+    \label{fig:fit}
+    %\caption{Needs one.}
+  \end{center}
+\end{figure}
+%
+\section*{Discussion}
+%
+We are able to identify a simple linear controller that exhibits larger gains
+in the stance phase than in the swing phase, although there is little
+indication of similar gain patterns in the right and left legs. The controller
+is also able to predict the measured joint torques with high accuracy in all
+joints, $>$ 60\% VAF. Future work will include non-linear control structures
+with reflexive time delays and data collected from a sample population.
+%
+\section*{Acknowledgments}
+
+This research was funded by the Ohio's Wright Center for Sensor Systems
+Engineering and the Parker Hannifin Corporation.
+
+\end{document}
