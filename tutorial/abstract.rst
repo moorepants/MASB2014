@@ -2,9 +2,10 @@
 Simulation and Control of Biomechanical Systems with Python
 ===========================================================
 
-Jason K. Moore, PhD. and Obinna Nwanna
-Human Motion and Control Laboratory
-Cleveland State University
+| Jason K. Moore, PhD. and Obinna Nwanna
+| Human Motion and Control Laboratory
+| Cleveland State University
+|
 
 In this tutorial you will learn how to derive the equations of motion for a
 typical multibody biomechanical system in a symbolic mathematical framework and
