@@ -52,16 +52,16 @@ controller that generates the joint torques given the joint angles and rates
 that fit this form:
 %
 \begin{equation}
-  m_m(\varphi) = m^*(\varphi) - \mathbf{K}s_m(\varphi)
+  m_m(\varphi) = m^*(\varphi) - \mathbf{K}(\varphi)s_m(\varphi)
 \end{equation}
 %
-where $\varphi$ is the time in the right leg gait cycle, $m_m(\varphi)$ is a vector
-of measured joint torques, $m^*(\varphi)$ are the reference joint torques,
-$\mathbf{K}$ is the gain matrix which multiplies the measured sensor vector.
-This equation is linear in gains and the reference torques, so given enough
-measured data the reference torques and the gains can be solved for using
-linear least squares. The externally applied perturbations are important for
-reducing the uncertainty in the identified parameters.
+where $\varphi$ is the time in the right leg gait cycle, $m_m(\varphi)$ is a
+vector of measured joint torques, $m^*(\varphi)$ are the reference joint
+torques, $\mathbf{K}(\varphi)$ is the scheduled gain matrix which multiplies
+the measured sensor vector. This equation is linear in gains and the reference
+torques, so given enough measured data the reference torques and the gains can
+be solved for using linear least squares. The externally applied perturbations
+are important for reducing the uncertainty in the identified parameters.
 \section*{Results}
 %
 Here we show an example result from a controller structure which is limited
