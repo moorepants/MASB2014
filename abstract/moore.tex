@@ -26,7 +26,7 @@ a control system to provide gait assistance. In particular, there are light
 weight lower extremity exoskeletons on the market that assist in walking but
 lack gait that resembles that of an able-bodied human. Our intent is to
 identify a simple linear controller from a large set of data collected from
-able-bodied walkers under prescribed longitudinal and/or lateral perturbations
+able-bodied walkers perturbed with random longitudinal and/or lateral forces
 with powered prosthetic applications in mind.
 %
 \section*{Methods}
@@ -47,30 +47,32 @@ flexion, and hip flexion angles, rates, and moments using 2D inverse dynamics.
 
 We section the joint angle, rate, and torque time series into steps based on
 the right foot's heel strike and interpolate 20 evenly spaced data points from
-each series along the gait cycle. We assume a simple proportional derivative
-controller that generates the joint torques given the joint angles and rates
-that fit this form:
+each series along the gait cycle. We assume a simple scheduled proportional
+derivative controller that generates the joint torques given the joint angles
+and rates that fits the following form for a single gait cycle.
 %
 \begin{equation}
-  m_m(\varphi) = m^*(\varphi) - \mathbf{K}(\varphi)s_m(\varphi)
+  \mathbf{m}_m(\varphi) = \mathbf{m}^*(\varphi) -
+  \mathbf{K}(\varphi)\mathbf{s}_m(\varphi)
 \end{equation}
 %
-where $\varphi$ is the time in the right leg gait cycle, $m_m(\varphi)$ is a
-vector of measured joint torques, $m^*(\varphi)$ are the reference joint
-torques, $\mathbf{K}(\varphi)$ is the scheduled gain matrix which multiplies
-the measured sensor vector. This equation is linear in gains and the reference
-torques, so given enough measured data the reference torques and the gains can
-be solved for using linear least squares. The externally applied perturbations
-are important for reducing the uncertainty in the identified parameters.
+where $\varphi$ is the time in the right leg gait cycle,
+$\mathbf{m}_m(\varphi)$ is a vector of measured joint torques,
+$\mathbf{m}^*(\varphi)$ is a vector of the reference joint torques,
+$\mathbf{K}(\varphi)$ is the scheduled gain matrix which multiplies the vector
+of measured angles and rates, $\mathbf{s}_m(\varphi)$. This equation is linear
+in gains and the reference torques. Given enough measured data, the reference
+torques and the gains can be solved for using linear least squares. The
+externally applied perturbations are critical for reducing the uncertainty in
+the identified parameters.
 \section*{Results}
 %
-Here we show an example result from a controller structure which is limited
-such that the joint torques are only generated from the error in the sensors
-from that same joint. Figure \ref{fig:gains} shows the estimates of the
-scheduled gains with respect to the percent gait cycle in each leg. Figure
-\ref{fig:fit} shows an example prediction of the measured ankle plantarflexion
-torque in the right leg by the identified control model with a variance
-accounted for [VAF] of 77\%.
+Here we show an example result from a controller structure which is limited to
+joint torque generation only from error in the sensors from that same joint.
+Figure \ref{fig:gains} shows the estimates of the scheduled gains with respect
+to the percent gait cycle in each leg. Figure \ref{fig:fit} shows an example
+prediction of the measured ankle plantarflexion torque in the right leg by the
+identified control model.
 %
 \begin{figure}[b]
   \begin{center}
