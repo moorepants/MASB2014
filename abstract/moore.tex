@@ -30,13 +30,13 @@ able-bodied subjects being perturbed by random longitudinal and/or lateral
 forces.
 %
 \section*{Methods}
-The example data herein was collected from a single subject (age: 25, mass: 101
-kg, height: 187 cm) walking on instrumented treadmill (VG005-A, Motek Medical,
-Amsterdam, Netherlands). The subject was longitudinally perturbed using random
-white noise with 5\% std around a nominal 1.2 m/s belt speed. Data was recorded
-for 4 minutes at 100 Hz, which included approximately 200 steps of walking.
-Ankle plantarflexion, knee flexion, and hip flexion angles, rates, and moments
-were computed using 2D inverse dynamics.
+The example data shown here was collected from a single subject (age: 25, mass:
+101 kg, height: 187 cm) walking on an instrumented treadmill (V-Gait, Motek
+Medical). The subject was longitudinally perturbed using random white noise
+with 5\% std around a nominal 1.2 m/s belt speed. Data was recorded for 4
+minutes at 100 Hz, which included approximately 200 steps of walking.  Ankle
+plantarflexion, knee flexion, and hip flexion angles, rates, and moments were
+computed using 2D inverse dynamics.
 %
 \begin{figure}[hbt]
   \begin{center}
@@ -60,11 +60,11 @@ given the joint angles and rates that fits the following form.
 where $t$ is an instance of time, $\varphi(t)$ is the phase in the right leg
 gait cycle, $\mathbf{m}(t)$ is a vector of joint torques,
 $\mathbf{m}^*(\varphi(t))$ is a vector of the reference joint torques,
-$\mathbf{K}(\varphi(t))$ is the gait phase scheduled gain matrix which
-multiplies the vector of joint angles and rates, $\mathbf{s}(t)$. This equation
-is linear in the gains and the reference torques. Given sufficient joint angle,
-rate, and torque measurements, the reference torques and the gains can be
-solved for using linear least squares.
+$\mathbf{K}(\varphi(t))$ is a gain matrix scheduled with respect to gait
+phase which multiplies the vector of joint angles and rates, $\mathbf{s}(t)$.
+This equation is linear in the gains and the reference torques. Given
+sufficient joint angle, rate, and torque measurements, the reference torques
+and the gains can be solved for using linear least squares.
 %
 \section*{Results}
 %
