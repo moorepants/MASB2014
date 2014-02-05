@@ -11,21 +11,8 @@ from gaitanalysis.utils import _percent_formatter
 
 directory = split(__file__)[0]
 
-perturbation_data_frame = pandas.read_hdf(join(directory,
-                                               '../data/perturbation.h5'),
-                                          'table')
-
-perturbation_data = gait.WalkingData(perturbation_data_frame)
-
-# The following identifies the steps based on vertical ground reaction
-# forces.
-perturbation_data.grf_landmarks('FP2.ForY', 'FP1.ForY',
-                                filter_frequency=15.0,
-                                num_steps_to_plot=None, do_plot=False,
-                                threshold=30.0, min_time=290.0)
-perturbation_data_right_steps = \
-    perturbation_data.split_at('right', num_samples=20,
-                               belt_speed_column='RightBeltSpeed')
+perturbation_data = gait.WalkingData(join(directory,
+                                          '../data/perturbation.h5'))
 
 # Controller identification.
 sensors = ['Right.Ankle.Flexion.Angle',
@@ -49,7 +36,7 @@ controls = ['Right.Ankle.PlantarFlexion.Moment',
             'Left.Hip.PlantarFlexion.Moment']
 
 perturbation_data_solver = \
-    controlid.SimpleControlSolver(perturbation_data_right_steps, sensors,
+    controlid.SimpleControlSolver(perturbation_data.steps, sensors,
                                   controls)
 
 gain_omission_matrix = np.zeros((len(controls), len(sensors))).astype(bool)

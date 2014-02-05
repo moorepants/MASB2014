@@ -53,4 +53,14 @@ args = new_inv_dyn_labels + [101.0, inv_dyn_low_pass_cutoff]
 
 perturbation_data.inverse_dynamics_2d(*args)
 
-perturbation_data.raw_data.to_hdf(join(split(__file__)[0], '../data/perturbation.h5'), 'table')
+# The following identifies the steps based on vertical ground reaction
+# forces.
+perturbation_data.grf_landmarks('FP2.ForY', 'FP1.ForY',
+                                filter_frequency=15.0,
+                                num_steps_to_plot=None, do_plot=False,
+                                threshold=30.0, min_time=290.0)
+
+perturbation_data.split_at('right', num_samples=20,
+                           belt_speed_column='RightBeltSpeed')
+
+perturbation_data.save(join(split(__file__)[0], '../data/perturbation.h5'))
