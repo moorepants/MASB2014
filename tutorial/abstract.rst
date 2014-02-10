@@ -28,6 +28,6 @@ systems, simulate and visualize the motion, and apply simple feedback
 controllers all with free and open source tools.
 
 The tutorial will be capped at 35 participants and you must be registered to
-attend. The examples will be able to be run on your own laptop, but we will
-also potentially have computers available with the software installed.
-Installation instructions will be posted at a later date.
+attend. The tutorial materials can be found `here
+<https://github.com/pydy/pydy-tutorial-pycon-2014>`_ and we will have computers
+available with the software pre-installed.
