@@ -7,9 +7,9 @@ from gaitanalysis import motek, gait
 # Figshare once I post the data.
 root_data_directory = "/home/moorepants/Data/human-gait/gait-control-identification"
 
-mocap_file_path = join(root_data_directory, 'T006', 'mocap-006.txt')
-record_file_path = join(root_data_directory, 'T006', 'record-006.txt')
-meta_file_path = join(root_data_directory, 'T006', 'meta-006.yml')
+mocap_file_path = join(root_data_directory, 'T009', 'mocap-009.txt')
+record_file_path = join(root_data_directory, 'T009', 'record-009.txt')
+meta_file_path = join(root_data_directory, 'T009', 'meta-009.yml')
 
 dflow_data = motek.DFlowData(mocap_file_path, record_file_path,
                              meta_file_path)
@@ -18,7 +18,7 @@ dflow_data.clean_data(interpolate_markers=True)
 # 'TreadmillPerturbation' is the current name of the longitudinal
 # perturbation trials. This returns a data frame of processed data.
 perturbation_data_frame = \
-    dflow_data.extract_processed_data(event='TreadmillPerturbation',
+    dflow_data.extract_processed_data(event='Longitudinal Perturbation',
                                       index_col='TimeStamp')
 
 # Here I compute the joint angles, rates, and torques.
@@ -49,7 +49,7 @@ perturbation_data = gait.WalkingData(perturbation_data_frame)
 
 #args = new_inv_dyn_labels + [dflow_data.meta['subject']['mass'],
                              #inv_dyn_low_pass_cutoff]
-args = new_inv_dyn_labels + [101.0, inv_dyn_low_pass_cutoff]
+args = new_inv_dyn_labels + [79.0, inv_dyn_low_pass_cutoff]
 
 perturbation_data.inverse_dynamics_2d(*args)
 
