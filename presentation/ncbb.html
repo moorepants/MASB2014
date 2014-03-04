@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=1024, user-scalable=no">
+
+  <title>Identification of human control during perturbed walking</title>
+
+  <!-- Required stylesheet -->
+  <link rel="stylesheet" media="screen" href="deck.js/core/deck.core.css">
+
+  <!-- Extension CSS files go here. Remove or add as needed. -->
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/goto/deck.goto.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/menu/deck.menu.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/navigation/deck.navigation.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/status/deck.status.css">
+  <link rel="stylesheet" media="screen" href="deck.js/extensions/scale/deck.scale.css">
+
+  <!-- Style theme. More available in /themes/style/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="deck.js/themes/style/swiss.css">
+
+  <!-- Transition theme. More available in /themes/transition/ or create your own. -->
+  <link rel="stylesheet" media="screen" href="deck.js/themes/transition/horizontal-slide.css">
+
+  <!-- Basic black and white print styles -->
+  <link rel="stylesheet" media="print" href="deck.js/core/print.css">
+
+  <!-- Required Modernizr file -->
+  <script src="deck.js/modernizr.custom.js"></script>
+
+  <!-- Custom stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- MathJax -->
+  <!-- https://github.com/mathjax/MathJax/wiki/LFAQ----less-frequently-asked-questions#how-can-i-configure-a-local-fallback-for-the-cdn -->
+  <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+  <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null }});<\/script>
+  <script src="/home/moorepants/src/MathJax/MathJax.js?config=TeX-AMS_HTML-full"><\/ script>')</script>
+
+</head>
+
+<body>
+  <div class="deck-container">
+
+    <!-- Begin slides. Just make elements with a class of slide. -->
+
+
+    <section class="slide">
+      <h2>Identification of human control during walking</h2>
+      <p>Jason K. Moore</p>
+      <p>Cleveland State University</p>
+      <p>February 27 2014</p>
+      <footer style="position:absolute;bottom:0;font-size:75%;">
+        <a href="http://www.uakron.edu/engineering/BME/ASB2014">NCBB</a>,
+        Cleveland Heights, Ohio, USA
+      </footer>
+    </section>
+
+    <section class="slide">
+      <h2>Exoskeletons</h2>
+      <p>Don't move naturally, can't balance</p>
+      <video width="640" height="480" controls>
+        <source src="vid/exoskeletons.mp4" type="video/mp4">
+        <source src="vid/exoskeletons.ogg" type="video/ogg">
+      Your browser does not support the video tag.
+      </video>
+      <!--
+      http://youtu.be/-bYYmZNxaZk
+      http://youtu.be/bhCAkUMQ5GA
+      http://youtu.be/XpVVEYOkj34
+      http://youtu.be/SS1MFoz1Cp0
+      -->
+    </section>
+
+    <section class="slide">
+      <h2>Idealized Gait Feedback Control</h2>
+      <img src="img/control-system-words.png" />
+    </section>
+
+    <section class="slide">
+      <h2>Idealized Gait Feedback Control</h2>
+      <table class="side-by-side">
+        <tr>
+            <img src="img/control-system-variables.png" />
+        </tr>
+        <tr>
+            <h3>Estimated</h3>
+            <ul>
+              <li>\(\varphi\): Phase of gait cycle</li>
+              <li>\(\mathbf{s}(\varphi)\): Joint angles and rates</li>
+              <li>\(\mathbf{m}(\varphi)\): Joint torques</li>
+              <li>\(w(t)\): Random belt speed</li>
+            </ul>
+            <h3>Unknown</h3>
+            <ul>
+              <li>\(\mathbf{K}(\varphi)\): Matrix of feedback gains</li>
+              <li>\(\mathbf{s}_0(\varphi)\): Open loop joint angles and rates</li>
+              <li>\(\mathbf{m}_0(\varphi)\): Open loop joint torques</li>
+            </ul>
+        </tr>
+      </table>
+
+    </section>
+
+    <section class="slide">
+      <h2>Block Diagram Algebra</h2>
+      <p>
+      \[
+      \mathbf{m} = \mathbf{m}_0(\varphi) + \mathbf{K}(\varphi) [\mathbf{s}_0(\varphi) - \mathbf{s}] \\
+      \]
+
+      \[
+      \mathbf{m} = \mathbf{m}_0(\varphi) + \mathbf{K}(\varphi) \mathbf{s}_0(\varphi) - \mathbf{K}(\varphi) \mathbf{s} \\
+      \]
+
+      \[
+      \mathbf{m} = \mathbf{m}^*(\varphi) - \mathbf{K}(\varphi) \mathbf{s}
+      \]
+      </p>
+      <footer>
+        <a href="http://nbviewer.ipython.org/github/moorepants/walking-sys-id/blob/master/src/notebooks/walking_least_squares.ipynb">
+          The Maths
+        </a>
+      </footer>
+    </section>
+
+    <!--
+    <section class="slide">
+      <h2>Sensors and Inputs</h2>
+      <p>Assume that a lower limb exoskeleton can sense relative orientation
+      and rate of the right and left ankle, knee, and hip angles.</p>
+      <p>
+        \(\mathbf{s} = \begin{bmatrix}s_1 \ldots s_p \end{bmatrix} \) where
+        \(p=12\)
+      </p>
+      <p>Assume that the exoskeleton can generate ankle, knee, and hip joint
+      torques.</p>
+      <p>
+        \(\mathbf{m} = \begin{bmatrix}m_1 \ldots m_q \end{bmatrix} \) where
+        \(q=6\)
+      </ul>
+      <p>With \(n\) time samples in each gait cycle and \(m\) steps there are
+      \(mnq\) equations and  which can be used to solve for the \(nq(p+1)\)
+      unknowns: \(\mathbf{m}^*(\varphi)\) and \(\mathbf{K}(\varphi)\). This is
+      a classic overdetermined system linear equations that can be solved with
+      linear least squares.</p>
+    </section>
+    -->
+
+    <!--
+    <section class="slide">
+      <h2>Experimental Protocol</h2>
+      <ul>
+        <li>Full body motion capture: 47 markers</li>
+        <li>Dual 6 DoF ground reaction forces</li>
+        <li>8 minutes (500+ steps) of longtidunal perturbations</li>
+        <li>Three walking speeds: 0.8, 1.2, 1.6 m/s</li>
+        <li>10+ subjects</li>
+      </ul>
+    </section>
+    -->
+
+    <section class="slide">
+      <h2>Random Belt Speed Variations</h2>
+      <table class="side-by-side">
+        <tr>
+          <td>
+            <img src="img/belt-speed.png" />
+          </td>
+          <td>
+            <video width="640" height="480" controls>
+              <source src="vid/longitudinal-perturb-1.2-mps.mp4" type="video/mp4">
+              <source src="vid/longitudinal-perturb-1.2-mps.ogg" type="video/ogg">
+            Your browser does not support the video tag.
+            </video>
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <!--
+    <section class="slide">
+      <h2>Measurement Variations</h2>
+      <table class="side-by-side">
+        <tr>
+          <td>
+            <img src="img/right-angle-variation-T019.png" />
+          </td>
+          <td>
+            <img src="img/right-moment-variation-T019.png" />
+          </td>
+        </tr>
+      </table>
+    </section>
+    -->
+
+    <!--
+    <section class="slide">
+      <h2>Gains: v=0.8 m/s</h2>
+      <table class="side-by-side">
+        <tr>
+          <td>
+            <img src="img/gains-019.png" />
+          </td>
+          <td>
+            <img src="img/gains-025.png" />
+          </td>
+        </tr>
+      </table>
+    </section>
+    -->
+
+    <section class="slide">
+      <h2>Gains: v=1.2 m/s</h2>
+      <table class="side-by-side">
+        <tr>
+          <td>
+            <img src="img/gains-017.png" />
+            Subject 1
+          </td>
+          <td>
+            <img src="img/gains-020.png" />
+            Subject 2
+          </td>
+        </tr>
+      </table>
+    </section>
+
+    <!--
+    <section class="slide">
+      <h2>How good is the model?</h2>
+      <img src="img/moment-fit-T019.png" />
+    </section>
+    -->
+
+    <!--
+    <section class="slide">
+      <h2>Summary</h2>
+      <ul>
+        <li>Similar gain patterns in each leg.</li>
+        <li>Similar gain patterns and magnitudes in different subjects.</li>
+        <li>The model can predict the joint torques for independent data.</li>
+        <li>Perturbations must be significantly higher that internal system
+        noise to have any hope of estimating control in this fashion.</li>
+      </ul>
+    </section>
+    -->
+
+    <section class="slide">
+      <h2>Future</h2>
+      <ul>
+        <li>Explore full \(\mathbf{K}\) matrix.</li>
+        <li>Add in time delays.</li>
+        <li>Remove clock from controller.</li>
+        <li>Non-linear control models: e.g. neural network.</li>
+        <li>Use indirect system identification approach with plant model.</li>
+        <li>Try out the controller on a simulation that has open loop control.</li>
+        <li>Try out the controller on the Indego.</li>
+      </ul>
+    </section>
+
+    <section class="slide">
+      <h2>Tutorial</h2>
+      <ul>
+        <li>Practice: tomorrow @ 2pm, SH 269, CSU</li>
+        <li>Official: Tuesday March 4th, U of Akron</li>
+      </ul>
+      <a
+        href="https://github.com/pydy/pydy-tutorial-pycon-2014">https://github.com/pydy/pydy-tutorial-pycon-2014</a>
+      <img src="img/human-balance-diagram.png" />
+    </section>
+
+    <section class="slide">
+      <h2>Open Source</h2>
+      <a
+        href="https://github.com/csu-hmc/Gait-Analysis-Toolkit">https://github.com/csu-hmc/Gait-Analysis-Toolkit</a>
+      <img src="img/gait-analysis.png" />
+    </section>
+
+    <!-- End slides. -->
+
+    <!-- Begin extension snippets. Add or remove as needed. -->
+
+    <!-- deck.navigation snippet -->
+    <div aria-role="navigation">
+      <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+      <a href="#" class="deck-next-link" title="Next">&#8594;</a>
+    </div>
+
+    <!-- deck.status snippet -->
+    <p class="deck-status" aria-role="status">
+      <span class="deck-status-current"></span>
+      /
+      <span class="deck-status-total"></span>
+    </p>
+
+    <!-- deck.goto snippet -->
+    <form action="." method="get" class="goto-form">
+      <label for="goto-slide">Go to slide:</label>
+      <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+      <datalist id="goto-datalist"></datalist>
+      <input type="submit" value="Go">
+    </form>
+
+    <!-- End extension snippets. -->
+  </div>
+
+<!-- Required JS files. -->
+<script src="deck.js/jquery.min.js"></script>
+<script src="deck.js/core/deck.core.js"></script>
+
+<!-- Extension JS files. Add or remove as needed. -->
+<script src="deck.js/extensions/menu/deck.menu.js"></script>
+<script src="deck.js/extensions/goto/deck.goto.js"></script>
+<script src="deck.js/extensions/status/deck.status.js"></script>
+<script src="deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="deck.js/extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+  $(function() {
+    $.deck('.slide');
+  });
+</script>
+</body>
+</html>
