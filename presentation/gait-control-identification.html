@@ -36,7 +36,7 @@
   <!-- https://github.com/mathjax/MathJax/wiki/LFAQ----less-frequently-asked-questions#how-can-i-configure-a-local-fallback-for-the-cdn -->
   <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
   <script>window.MathJax || document.write('<script type="text/x-mathjax-config">MathJax.Hub.Config({"HTML-CSS":{imageFont:null }});<\/script>
-  <script src="/home/moorepants/bin/MathJax/MathJax.js?config=TeX-AMS_HTML-full"><\/ script>')</script>
+  <script src="MathJax/MathJax.js?config=TeX-AMS_HTML-full"><\/ script>')</script>
 
 </head>
 
@@ -63,7 +63,8 @@
     Hi, My name is Jason Moore and I'm currently a postdoctoral researcher in
     Ton van den Bogert's human motion and control lab at Cleveland State
     University. Today I'm going to tell you about our initial work on
-    identifying the control systems in able bodied humans.
+    identifying the control systems in able bodied humans during walking and
+    potential application to powered exoskeletons.
     -->
 
     <section class="slide">
@@ -73,6 +74,10 @@
         <source src="vid/exoskeletons.ogg" type="video/ogg">
       Your browser does not support the video tag.
       </video>
+      <p><small>Clips collected from <a href="http://youtu.be/-bYYmZNxaZk">one</a>, <a
+          href="http://youtu.be/bhCAkUMQ5GA">two</a>, <a
+          href="http://youtu.be/XpVVEYOkj34">three</a>, and <a
+          href="http://youtu.be/SS1MFoz1Cp0">four</a>.</small></p>
       <!--
       http://youtu.be/-bYYmZNxaZk
       http://youtu.be/bhCAkUMQ5GA
@@ -86,8 +91,8 @@
     mechanical assistance. These types of devices are remarkable in that they
     allow a paralyzed person to take steps again, but there is still a lot of
     work to be done to provide both natural gait and balance. We are interested
-    in identifying control schemes that able bodied walkers and runners use and
-    mapping those to the CPU, sensor and actuator network inside these power
+    in identifying control schemes used by able-bodied walkers and mapping
+    those to the CPU, sensor and actuator network inside these powered
     exoskeletons.
     -->
 
@@ -96,13 +101,13 @@
       <img src="img/control-system-words.png" />
     </section>
     <!--
-    We model the human during cyclic walking as a multi-input and output
-    feeback system. The human is driven by joint torques and can be perturbed
-    by external inputs. The state is sensed, the kinematics in our case, and
-    subtracted from a nominal or open loop solution to cyclic gait. The
-    controller then computes the additive inputs to the nominal or open loop
-    joint torques to drive the walker back to the nomical cyclic walking
-    pattern.
+    We start by modeling the human during cyclic walking as a
+    multi-input/output feeback system. The human plant is driven by joint
+    torques and can be perturbed by external inputs. The state is sensed, the
+    kinematics in our case, and subtracted from a nominal or open loop solution
+    to cyclic gait. The controller then computes the additive inputs to the
+    nominal or open loop joint torques to drive the walker back to the nominal
+    cyclic walking pattern.
     -->
 
     <section class="slide">
@@ -131,13 +136,13 @@
       </table>
     </section>
     <!--
-    We approach the identification of the controller from direct
-    identification-like methods. Assuming that we can have good "measured"
+    We approach the identification of the controller from a direct
+    identification-like method. We assume that we can have good "measured"
     estimates of the joint angles, rates, and torques throughout the phase of
-    the gait cycle, phi. To ensure that control is used beyond the nominal
-    walking mode, we perturb the plant (the human) with random external
-    perturbations, which are also measured. Our goal being to find a gain
-    matrix that relates the sensor error to the plant inputs.
+    the gait cycle, phi. To ensure that feedback control is used, we perturb
+    the plant (the human) with random external perturbations, which are also
+    measured. Our goal being to find a feedback gain matrix that relates the
+    sensor error to the plant inputs.
     -->
 
     <section class="slide">
@@ -167,11 +172,11 @@
     </section>
     <!--
     Since we can't measure the nomimal joint kinematics or joint torques we can
-    use a little equation rearranging to put the equation that relates inputs
-    to the controller to its outputs into a form that makes it linear in the
-    gains and a term I will call m*, which equals the nominal torque if
-    feedback is zero. This form can generalize to any number and type of
-    sensors and control inputs.
+    use a little equation rearranging to put the equation in a form that
+    relates inputs to the controller to its outputs into a form that makes it
+    linear in the gains and a term I will call m*, which equals the nominal
+    torque if feedback is zero. This form can generalize to any number and type
+    of sensors and control inputs.
     -->
 
     <section class="slide">
@@ -206,8 +211,8 @@
     </section>
     <!--
     From now on I'll use a simplified controller model. The idea is to try to
-    extract a controller for sensors and inputs available on an exoskeleton
-    from data collected from an able bodied human. So we formulate the simplest
+    extract a controller for sensors and control inputs available on an exoskeleton
+    from data collected from an able bodied human. So we formulate a simple
     2D PD controller that feeds back angle and rate at the ankle, knee, and hip
     locally to produce torque at that joint.
     -->
@@ -305,7 +310,7 @@
     joint. We see that different subjects have similar gain profiles, although
     there is some variation. All but the hip rate feeback term has zero gain in
     the swing phase and larger gains in the stance phase. Notice too that
-    both negative and positive feedback is used in during the gait cycle.
+    both negative and positive feedback is used during the gait cycle.
     -->
 
     <section class="slide">
@@ -326,7 +331,8 @@
     respect to speed. The solid lines are the slow speed, the dashed the
     medium, and the dotted the high speed walking. Some curves seem to vary
     little with speed and others show some variation: increasing/decreasing
-    with speed or drastic change from low to high speed.
+    with speed or drastic change from low to high speed. We see a decidely
+    different behavior in the knee rate gain during stance at the low speed.
     -->
 
     <section class="slide">
@@ -335,9 +341,9 @@
     </section>
     <!--
     So you may be wondering how good this simple 2D PD control model is. Well I
-    am too. At this point the best thing I can say about it, is that given and
+    am too. At this point the best thing I can say about it, is that given an
     independent set of joint angles and rates (the last 1/4 of each trial) the
-    model can predict over 65% of the variance in the estimated torque data.
+    model can predict over 65% of the variance in the estimated torque data
     This plot shows the joint torques in each joint and each leg, both the
     measured values and the predicted values, along with the percent variance
     accounted for. The further the joint from the force plates the poorer the
@@ -358,7 +364,8 @@
     So to summarize, we've used a simple control model structure and a large
     set of data to tease out numerical values for the scheduled gains during
     walking by longitudinally perturbing the subjects. We see similar patterns
-    across subjects.
+    in the gains across subjects and are able to predict joint torques very
+    well.
     -->
 
     <section class="slide">
@@ -375,10 +382,10 @@
     </section>
     <!--
     We have a lot more to do here before we make solid conclusions. The data I
-    showed was rather preliminary. We plan to explore more complex gain
-    matrices, add time delays for nueral processing, remove the scheduling and
+    showed was rather preliminary. We plan to explore more gain
+    matrices, add time delays for neural processing, remove the scheduling and
     try to make the gains a function of state instead of phase, look into more
-    complex control models, try out indirected ID, and try out the controllers
+    complex control models, try out indirect ID, and try out the controllers
     in simulation and an actual exoskeleton.
     -->
 
@@ -386,13 +393,15 @@
       <h2>Tutorial</h2>
       <h3>Simulation and Control of Biomechanical Systems with Python</h3>
       <p>Tonight at 6pm</p>
+      <p>Chemistry Computer Lab in the Whitby building on the 2nd floor. Next
+      to ASEC (previous location).</p>
       <a
         href="https://github.com/pydy/pydy-tutorial-pycon-2014">https://github.com/pydy/pydy-tutorial-pycon-2014</a>
       <img src="img/human-balance-diagram.png" />
     </section>
     <!--
-    Here is a quick plug for the tutorial I will be giving tonight on
-    simulation and control of macro biomechanical systems using the Python
+    Here is a quick plug for the tutorial we will be giving tonight on
+    simulation and control of biomechanical systems using the Python
     programming language. There may be some slots left, talk to the conference
     organizers if you are interested in joining.
     -->
@@ -416,7 +425,7 @@
       </ul>
       <h3>Data</h3>
       <ul>
-        <li>On its way! (ask me for it)</li>
+        <li>On its way!</li>
       </ul>
     </section>
 
